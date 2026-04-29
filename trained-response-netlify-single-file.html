@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trained Response | Train Before It Matters</title>
+  <meta name="description" content="Trained Response helps people build real survival instincts through short daily scenarios and practical decision training." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --black: #090909;
+      --black-soft: #131313;
+      --white: #ffffff;
+      --red: #d71920;
+      --red-dark: #ab1117;
+      --text-soft: rgba(255, 255, 255, 0.76);
+      --line: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 48px rgba(0, 0, 0, 0.32);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--white);
+      background: var(--black);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    .container {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(9, 9, 9, 0.92);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 16px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+    }
+    .brand-mark {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--red);
+    }
+    .brand-text { font-size: 1rem; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--red);
+      color: var(--white);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 160ms ease, transform 160ms ease;
+    }
+    .button:hover {
+      background: var(--red-dark);
+      transform: translateY(-1px);
+    }
+    .button-small {
+      min-height: 42px;
+      padding: 0 16px;
+    }
+    .hero {
+      position: relative;
+      min-height: calc(100svh - 72px);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 70% 28%, rgba(215, 25, 32, 0.28), transparent 30%),
+        linear-gradient(115deg, rgba(9, 9, 9, 0.97) 0%, rgba(9, 9, 9, 0.94) 43%, rgba(9, 9, 9, 0.58) 70%, rgba(9, 9, 9, 0.42) 100%),
+        #000000;
+    }
+    .hero-media,
+    .hero-shade {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 75% center;
+      opacity: 0.32;
+      filter: saturate(0) contrast(1.08);
+    }
+    .hero-shade {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.76) 42%, rgba(0, 0, 0, 0.3) 100%);
+    }
+    .hero-layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, 0.85fr);
+      gap: 36px;
+      align-items: center;
+      padding: 56px 0 42px;
+    }
+    .hero-copy { max-width: 700px; }
+    .eyebrow {
+      margin: 0;
+      color: #ff8d92;
+      font-size: 0.88rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      margin: 14px 0 14px;
+      font-size: clamp(3rem, 7vw, 5.4rem);
+      line-height: 0.96;
+    }
+    .hero-subhead {
+      max-width: 680px;
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 1.08rem;
+      line-height: 1.72;
+    }
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .hero-points li {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 0.94rem;
+      font-weight: 700;
+    }
+    .hero-panel {
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+    .panel-topline {
+      color: #ff8d92;
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .hero-panel h2 {
+      margin: 12px 0 18px;
+      font-size: 2rem;
+      line-height: 1.05;
+    }
+    .waitlist-form {
+      display: grid;
+      gap: 14px;
+    }
+    .waitlist-form label {
+      display: grid;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .waitlist-form input,
+    .waitlist-form select {
+      width: 100%;
+      min-height: 50px;
+      padding: 0 14px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.52);
+      color: var(--white);
+      font: inherit;
+    }
+    .waitlist-form input::placeholder { color: rgba(255, 255, 255, 0.48); }
+    .form-note {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.92rem;
+    }
+    .ticker-band {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #050505;
+    }
+    .ticker-shell {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      min-height: 66px;
+    }
+    .ticker-label {
+      margin: 0;
+      color: #ff8d92;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .ticker-track { overflow: hidden; }
+    .ticker-content {
+      white-space: nowrap;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.95rem;
+    }
+    .hidden {
+      position: absolute;
+      left: -9999px;
+    }
+    .netlify-only {
+      display: none;
+    }
+    @media (max-width: 940px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        padding: 44px 0 32px;
+      }
+      .hero-image {
+        object-position: center top;
+        opacity: 0.2;
+      }
+      .hero-shade {
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.92) 100%);
+      }
+      .hero-copy {
+        max-width: none;
+      }
+    }
+    @media (max-width: 640px) {
+      .brand-text {
+        display: none;
+      }
+      .button-small,
+      .button {
+        width: 100%;
+      }
+      .nav {
+        align-items: stretch;
+        min-height: auto;
+        padding: 14px 0;
+      }
+      .hero {
+        min-height: auto;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+      .hero-subhead {
+        font-size: 1rem;
+      }
+      .hero-panel {
+        padding: 20px;
+      }
+      .ticker-shell {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 14px 0;
+      }
+      .ticker-content {
+        white-space: normal;
+        line-height: 1.55;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Trained Response home">
+        <span class="brand-mark">TR</span>
+        <span class="brand-text">Trained Response</span>
+      </a>
+      <a class="button button-small" href="#waitlist">Join Waitlist</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" aria-hidden="true">
+        <img class="hero-image" src="mascot.png" alt="" />
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Daily scenario training</p>
+          <h1 id="hero-title">Train before it matters.</h1>
+          <p class="hero-subhead">
+            Build real survival instincts through short daily scenarios that train you to stay calm, think clearly, and act fast when it matters most-all while having fun.
+          </p>
+          <ul class="hero-points" aria-label="Key benefits">
+            <li>Fast scenario reps</li>
+            <li>Pressure-tested choices</li>
+            <li>Retention that sticks</li>
+          </ul>
+        </div>
+
+        <div class="hero-panel" id="waitlist">
+          <div class="panel-topline">Get early access</div>
+          <h2>Join the waitlist</h2>
+          <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" action="/success.html" accept-charset="UTF-8">
+            <input type="hidden" name="form-name" value="waitlist" />
+            <p class="hidden">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" placeholder="Your name" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              <span>What interests you most?</span>
+              <select name="interest">
+                <option value="daily-training">Daily training</option>
+                <option value="family-mode">Family mode</option>
+                <option value="solo-survival">Solo survival</option>
+                <option value="preparedness">Preparedness</option>
+              </select>
+            </label>
+            <button class="button" type="submit">Get Early Access</button>
+            <p class="form-note">Submitted entries go to Netlify Forms for this site.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker-band" aria-labelledby="ticker-heading">
+      <div class="container ticker-shell">
+        <p id="ticker-heading" class="ticker-label">Preparedness headlines</p>
+        <div class="ticker-track" role="status" aria-live="polite" aria-atomic="false">
+          <div class="ticker-content" id="newsTicker">Loading current preparedness headlines...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <form class="netlify-only" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" hidden aria-hidden="true">
+    <input type="hidden" name="form-name" value="waitlist" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="interest">
+      <option value="daily-training">Daily training</option>
+      <option value="family-mode">Family mode</option>
+      <option value="solo-survival">Solo survival</option>
+      <option value="preparedness">Preparedness</option>
+    </select>
+    <input name="bot-field" />
+  </form>
+
+  <script>
+    (function () {
+      const ticker = document.getElementById("newsTicker");
+      const separator = "   |   ";
+      const fallbackHeadlines = [
+        "Flood safety messaging expands as communities prepare for severe weather",
+        "Wildfire readiness remains a priority across high-risk regions",
+        "Emergency managers push faster public alerts ahead of storm season",
+        "Preparedness guidance focuses on evacuation plans, supplies, and communication"
+      ];
+
+      function normalizeHeadline(text) {
+        return String(text || "")
+          .replace(/\s+/g, " ")
+          .replace(/ - [^-]+$/, "")
+          .trim();
+      }
+
+      function renderHeadlines(items) {
+        const headlines = items.map(normalizeHeadline).filter(Boolean);
+        ticker.textContent = headlines.join(separator);
+      }
+
+      async function loadTicker() {
+        try {
+          const response = await fetch("/.netlify/functions/news-ticker", {
+            headers: { Accept: "application/json" }
+          });
+
+          if (!response.ok) {
+            throw new Error("Ticker request failed");
+          }
+
+          const payload = await response.json();
+          const live = Array.isArray(payload.headlines) ? payload.headlines.map((item) => item.title) : [];
+          renderHeadlines(live.length ? live : fallbackHeadlines);
+        } catch (error) {
+          renderHeadlines(fallbackHeadlines);
+        }
+      }
+
+      loadTicker();
+      window.setInterval(loadTicker, 15 * 60 * 1000);
+    })();
+  </script>
+</body>
+</html>
