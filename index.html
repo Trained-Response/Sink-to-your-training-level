@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trained Response | Train Before It Matters</title>
+  <meta name="description" content="Trained Response helps people build real survival instincts through short daily scenarios and practical decision training." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Trained Response home">
+        <span class="brand-mark">TR</span>
+        <span class="brand-text">Trained Response</span>
+      </a>
+      <a class="button button-small" href="#waitlist">Join Waitlist</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-media" aria-hidden="true">
+        <img class="hero-image" src="mascot.png" alt="" />
+      </div>
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Daily scenario training</p>
+          <h1 id="hero-title">Train before it matters.</h1>
+          <p class="hero-subhead">
+            Build real survival instincts through short daily scenarios that train you to stay calm, think clearly, and act fast when it matters most-all while having fun.
+          </p>
+          <ul class="hero-points" aria-label="Key benefits">
+            <li>Fast scenario reps</li>
+            <li>Pressure-tested choices</li>
+            <li>Retention that sticks</li>
+          </ul>
+        </div>
+
+        <div class="hero-panel">
+          <div class="panel-topline">Get early access</div>
+          <h2>Join the waitlist</h2>
+          <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" action="/success.html" accept-charset="UTF-8">
+            <input type="hidden" name="form-name" value="waitlist" />
+            <p class="hidden">
+              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" placeholder="Your name" />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="you@example.com" required />
+            </label>
+            <label>
+              <span>What interests you most?</span>
+              <select name="interest">
+                <option value="daily-training">Daily training</option>
+                <option value="family-mode">Family mode</option>
+                <option value="solo-survival">Solo survival</option>
+                <option value="preparedness">Preparedness</option>
+              </select>
+            </label>
+            <button class="button" type="submit">Get Early Access</button>
+            <p class="form-note">Submitted entries go to Netlify Forms for this site.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="ticker-band" aria-labelledby="ticker-heading">
+      <div class="container ticker-shell">
+        <p id="ticker-heading" class="ticker-label">Preparedness headlines</p>
+        <div class="ticker-track" role="status" aria-live="polite" aria-atomic="false">
+          <div class="ticker-content" id="newsTicker">Loading current preparedness headlines...</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <form class="netlify-only" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" hidden aria-hidden="true">
+    <input type="hidden" name="form-name" value="waitlist" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <select name="interest">
+      <option value="daily-training">Daily training</option>
+      <option value="family-mode">Family mode</option>
+      <option value="solo-survival">Solo survival</option>
+      <option value="preparedness">Preparedness</option>
+    </select>
+    <input name="bot-field" />
+  </form>
+
+  <script>
+    (function () {
+      const ticker = document.getElementById("newsTicker");
+      const separator = "   |   ";
+
+      function normalizeHeadline(text) {
+        return String(text || "")
+          .replace(/\s+/g, " ")
+          .replace(/ - [^-]+$/, "")
+          .trim();
+      }
+
+      function renderHeadlines(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          ticker.textContent = "No current compatible headlines available.";
+          return;
+        }
+
+        const headlines = items
+          .map((item) => normalizeHeadline(item.title))
+          .filter(Boolean);
+
+        ticker.textContent = headlines.join(separator);
+      }
+
+      async function loadTicker() {
+        try {
+          const response = await fetch("/.netlify/functions/news-ticker", {
+            headers: { Accept: "application/json" }
+          });
+
+          if (!response.ok) {
+            throw new Error("Ticker request failed");
+          }
+
+          const payload = await response.json();
+          renderHeadlines(payload.headlines);
+        } catch (error) {
+          ticker.textContent = "Preparedness headlines are temporarily unavailable.";
+        }
+      }
+
+      loadTicker();
+      window.setInterval(loadTicker, 15 * 60 * 1000);
+    })();
+  </script>
+</body>
+</html>
