@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Trained Response | Train Before It Matters</title>
+  <title>Trained Response | Train Before the Emergency Makes the Decision for You</title>
   <meta name="description" content="Trained Response helps people build real survival instincts through short daily scenarios and practical decision training." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +22,15 @@
   </header>
 
   <main id="top">
+    <section class="ticker-band" aria-labelledby="ticker-heading">
+      <div class="container ticker-shell">
+        <p id="ticker-heading" class="ticker-label">Preparedness headlines</p>
+        <div class="ticker-track" role="status" aria-live="polite" aria-atomic="false">
+          <div class="ticker-content" id="newsTicker">Loading current preparedness headlines...</div>
+        </div>
+      </div>
+    </section>
+
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-media" aria-hidden="true">
         <img class="hero-image" src="mascot.png" alt="" />
@@ -30,7 +39,7 @@
       <div class="container hero-layout">
         <div class="hero-copy">
           <p class="eyebrow">Daily scenario training</p>
-          <h1 id="hero-title">Train before it matters.</h1>
+          <h1 id="hero-title">Train before the emergency makes the decision for you.</h1>
           <p class="hero-subhead">
             Build real survival instincts through short daily scenarios that train you to stay calm, think clearly, and act fast when it matters most-all while having fun.
           </p>
@@ -41,7 +50,7 @@
           </ul>
         </div>
 
-        <div class="hero-panel">
+        <div class="hero-panel" id="waitlist">
           <div class="panel-topline">Get early access</div>
           <h2>Join the waitlist</h2>
           <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" action="/success.html" accept-charset="UTF-8">
@@ -73,14 +82,6 @@
       </div>
     </section>
 
-    <section class="ticker-band" aria-labelledby="ticker-heading">
-      <div class="container ticker-shell">
-        <p id="ticker-heading" class="ticker-label">Preparedness headlines</p>
-        <div class="ticker-track" role="status" aria-live="polite" aria-atomic="false">
-          <div class="ticker-content" id="newsTicker">Loading current preparedness headlines...</div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <form class="netlify-only" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" hidden aria-hidden="true">
@@ -99,7 +100,13 @@
   <script>
     (function () {
       const ticker = document.getElementById("newsTicker");
-      const separator = "   |   ";
+      const separator = "   /   ";
+      const fallbackHeadlines = [
+        "Flood safety messaging expands as communities prepare for severe weather",
+        "Wildfire readiness remains a priority across high-risk regions",
+        "Emergency managers push faster public alerts ahead of storm season",
+        "Preparedness guidance focuses on evacuation plans, supplies, and communication"
+      ];
 
       function normalizeHeadline(text) {
         return String(text || "")
@@ -110,7 +117,7 @@
 
       function renderHeadlines(items) {
         if (!Array.isArray(items) || items.length === 0) {
-          ticker.textContent = "No current compatible headlines available.";
+          renderTickerText(fallbackHeadlines);
           return;
         }
 
@@ -118,12 +125,25 @@
           .map((item) => normalizeHeadline(item.title))
           .filter(Boolean);
 
-        ticker.textContent = headlines.join(separator);
+        renderTickerText(headlines.length ? headlines : fallbackHeadlines);
+      }
+
+      function renderTickerText(headlines) {
+        const text = headlines.join(separator);
+        ticker.innerHTML = "";
+
+        for (let index = 0; index < 2; index += 1) {
+          const group = document.createElement("span");
+          group.className = "ticker-group";
+          group.textContent = text + separator;
+          ticker.appendChild(group);
+        }
       }
 
       async function loadTicker() {
         try {
-          const response = await fetch("/.netlify/functions/news-ticker", {
+          const response = await fetch("/.netlify/functions/news-ticker?ts=" + Date.now(), {
+            cache: "no-store",
             headers: { Accept: "application/json" }
           });
 
@@ -134,12 +154,12 @@
           const payload = await response.json();
           renderHeadlines(payload.headlines);
         } catch (error) {
-          ticker.textContent = "Preparedness headlines are temporarily unavailable.";
+          renderTickerText(fallbackHeadlines);
         }
       }
 
       loadTicker();
-      window.setInterval(loadTicker, 15 * 60 * 1000);
+      window.setInterval(loadTicker, 60 * 1000);
     })();
   </script>
 </body>
