@@ -13,11 +13,11 @@
 <body>
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="Trained Response home">
+      <div class="brand brand-disabled" aria-label="Trained Response home">
         <span class="brand-mark">TR</span>
         <span class="brand-text">Trained Response</span>
-      </a>
-      <a class="button button-small" href="#waitlist">Join Waitlist</a>
+      </div>
+      <button class="button button-small" type="button" id="joinWaitlistButton">Join Waitlist</button>
     </div>
   </header>
 
@@ -53,35 +53,38 @@
         <div class="hero-panel" id="waitlist">
           <div class="panel-topline">Get early access</div>
           <h2>Join the waitlist</h2>
-          <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" action="/success.html" accept-charset="UTF-8">
-            <input type="hidden" name="form-name" value="waitlist" />
-            <p class="hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          <form class="waitlist-form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
+            <input type="hidden" name="form-name" value="waitlist">
+
+            <p hidden>
+              <label>
+                Don't fill this out:
+                <input name="bot-field">
+              </label>
             </p>
-            <label>
-              <span>Name</span>
-              <input type="text" name="name" placeholder="Your name" />
-            </label>
-            <label>
-              <span>Email</span>
-              <input type="email" name="email" placeholder="you@example.com" required />
-            </label>
+
+            <input type="text" name="name" placeholder="Your name">
+
+            <input id="waitlistEmail" type="email" name="email" placeholder="Your email" required>
+
             <label>
               <span>What interests you most?</span>
-              <select name="interest">
-                <option value="daily-training">Daily training</option>
-                <option value="family-mode">Family mode</option>
-                <option value="solo-survival">Solo survival</option>
-                <option value="preparedness">Preparedness</option>
-              </select>
+              <span class="select-wrap">
+                <select name="interest" required>
+                  <option value="">Select one</option>
+                  <option value="daily-training">Daily training</option>
+                  <option value="family-mode">Family mode</option>
+                  <option value="solo-survival">Solo survival</option>
+                  <option value="preparedness">Preparedness</option>
+                </select>
+              </span>
             </label>
-            <button class="button" type="submit">Get Early Access</button>
-            <p class="form-note">Submitted entries go to Netlify Forms for this site.</p>
+
+            <button class="button" type="submit">Join Waitlist</button>
           </form>
         </div>
       </div>
     </section>
-
   </main>
 
   <form class="netlify-only" name="waitlist" method="POST" data-netlify="true" netlify netlify-honeypot="bot-field" hidden aria-hidden="true">
@@ -100,13 +103,26 @@
   <script>
     (function () {
       const ticker = document.getElementById("newsTicker");
+      const joinWaitlistButton = document.getElementById("joinWaitlistButton");
+      const waitlistEmail = document.getElementById("waitlistEmail");
       const separator = "   /   ";
       const fallbackHeadlines = [
         "Flood safety messaging expands as communities prepare for severe weather",
         "Wildfire readiness remains a priority across high-risk regions",
         "Emergency managers push faster public alerts ahead of storm season",
-        "Preparedness guidance focuses on evacuation plans, supplies, and communication"
+        "Earthquake drills emphasize family communication and supply planning",
+        "Heat safety guidance urges cooling plans and neighbor check-ins",
+        "Winter storm preparedness reminders focus on backup power and travel safety"
       ];
+
+      if (joinWaitlistButton && waitlistEmail) {
+        joinWaitlistButton.addEventListener("click", function () {
+          waitlistEmail.scrollIntoView({ behavior: "smooth", block: "center" });
+          window.setTimeout(function () {
+            waitlistEmail.focus({ preventScroll: true });
+          }, 350);
+        });
+      }
 
       function normalizeHeadline(text) {
         return String(text || "")

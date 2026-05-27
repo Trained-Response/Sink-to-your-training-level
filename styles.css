@@ -63,6 +63,10 @@ img {
   font-weight: 800;
 }
 
+.brand-disabled {
+  cursor: default;
+}
+
 .brand-mark {
   display: inline-grid;
   place-items: center;
@@ -231,6 +235,29 @@ img {
   background: rgba(0, 0, 0, 0.52);
   color: var(--white);
   font: inherit;
+}
+
+.waitlist-form select {
+  appearance: none;
+  padding-right: 44px;
+}
+
+.select-wrap {
+  position: relative;
+  display: block;
+}
+
+.select-wrap::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid rgba(255, 255, 255, 0.78);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+  pointer-events: none;
+  transform: translateY(-65%) rotate(45deg);
 }
 
 .waitlist-form input::placeholder {
