@@ -107,12 +107,11 @@
       const waitlistEmail = document.getElementById("waitlistEmail");
       const separator = "   /   ";
       const fallbackHeadlines = [
-        "Flood safety messaging expands as communities prepare for severe weather",
-        "Wildfire readiness remains a priority across high-risk regions",
-        "Emergency managers push faster public alerts ahead of storm season",
-        "Earthquake drills emphasize family communication and supply planning",
-        "Heat safety guidance urges cooling plans and neighbor check-ins",
-        "Winter storm preparedness reminders focus on backup power and travel safety"
+        {
+          title: "Current preparedness headlines are temporarily unavailable.",
+          source: "Trained Response",
+          date: "Latest update"
+        }
       ];
 
       if (joinWaitlistButton && waitlistEmail) {
@@ -131,6 +130,20 @@
           .trim();
       }
 
+      function formatHeadline(item) {
+        if (typeof item === "string") {
+          return normalizeHeadline(item);
+        }
+
+        const title = normalizeHeadline(item.title);
+        const details = [item.source, item.date]
+          .map((value) => normalizeHeadline(value))
+          .filter(Boolean)
+          .join(" - ");
+
+        return details ? title + " (" + details + ")" : title;
+      }
+
       function renderHeadlines(items) {
         if (!Array.isArray(items) || items.length === 0) {
           renderTickerText(fallbackHeadlines);
@@ -138,7 +151,7 @@
         }
 
         const headlines = items
-          .map((item) => normalizeHeadline(item.title))
+          .map(formatHeadline)
           .filter(Boolean);
 
         renderTickerText(headlines.length ? headlines : fallbackHeadlines);
