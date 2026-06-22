@@ -421,12 +421,28 @@ img {
   .ticker-shell {
     grid-template-columns: 1fr;
     gap: 8px;
+    min-height: auto;
     padding: 14px 0;
   }
 
+  .ticker-track {
+    overflow: visible;
+  }
+
   .ticker-content {
-    white-space: nowrap;
+    display: block;
+    width: auto;
+    white-space: normal;
     line-height: 1.55;
-    animation-duration: 18s;
+    animation: none;
+  }
+
+  .ticker-group {
+    display: block;
+    padding-right: 0;
+  }
+
+  .ticker-group + .ticker-group {
+    display: none;
   }
 }
